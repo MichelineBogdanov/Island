@@ -1,7 +1,12 @@
 package com.javarush.bogdanov.island.biosphere.animals.herbivores;
 
+import com.javarush.bogdanov.island.util.Util;
+
 public class Sheep extends Herbivores {
-    public Sheep(double weight, int populationOnCell, int speed, double diet, boolean gender) {
-        super(70, 140, 3, 15, gender);
+
+    public Sheep() {
+        super("Овца", 70, 140, 3, 15);
+        this.setGender(Util.getRandomGender());
+        this.setWeight(Util.getRandomWeight(this.getMaxWeight()));
     }
 }

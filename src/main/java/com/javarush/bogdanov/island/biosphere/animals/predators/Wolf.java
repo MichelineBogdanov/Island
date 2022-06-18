@@ -1,7 +1,12 @@
 package com.javarush.bogdanov.island.biosphere.animals.predators;
 
+import com.javarush.bogdanov.island.util.Util;
+
 public class Wolf extends Predators {
-    public Wolf(double weight, int populationOnCell, int speed, double diet, boolean gender) {
-        super(weight, populationOnCell, speed, diet, gender);
+
+    public Wolf() {
+        super("Волк", 50, 30, 3, 8);
+        this.setGender(Util.getRandomGender());
+        this.setWeight(Util.getRandomWeight(this.getMaxWeight()));
     }
 }

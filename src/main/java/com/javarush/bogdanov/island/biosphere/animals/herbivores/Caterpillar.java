@@ -1,7 +1,12 @@
 package com.javarush.bogdanov.island.biosphere.animals.herbivores;
 
+import com.javarush.bogdanov.island.util.Util;
+
 public class Caterpillar extends Herbivores {
-    public Caterpillar(double weight, int populationOnCell, int speed, double diet, boolean gender) {
-        super(0.01, 1000, 0, 0, gender);
+
+    public Caterpillar() {
+        super("Гусеница", 0.01, 1000, 0, 0);
+        this.setGender(Util.getRandomGender());
+        this.setWeight(Util.getRandomWeight(this.getMaxWeight()));
     }
 }

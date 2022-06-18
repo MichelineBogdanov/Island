@@ -1,7 +1,12 @@
 package com.javarush.bogdanov.island.biosphere.animals.herbivores;
 
+import com.javarush.bogdanov.island.util.Util;
+
 public class Mouse extends Herbivores {
-    public Mouse(double weight, int populationOnCell, int speed, double diet, boolean gender) {
-        super(0.05, 500, 1, 0.01, gender);
+
+    public Mouse() {
+        super("Мышь", 0.05, 500, 1, 0.01);
+        this.setGender(Util.getRandomGender());
+        this.setWeight(Util.getRandomWeight(this.getMaxWeight()));
     }
 }

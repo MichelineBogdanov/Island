@@ -1,39 +1,31 @@
 package com.javarush.bogdanov.island.biosphere.animals;
 
 import com.javarush.bogdanov.island.biosphere.Biosphere;
-import com.javarush.bogdanov.island.biosphere.animals.actions.AbleToEat;
-import com.javarush.bogdanov.island.biosphere.animals.actions.Fertile;
-import com.javarush.bogdanov.island.biosphere.animals.actions.Movable;
+import com.javarush.bogdanov.island.biosphere.actions.AbleToEat;
+import com.javarush.bogdanov.island.biosphere.actions.Fertile;
+import com.javarush.bogdanov.island.biosphere.actions.Movable;
+import com.javarush.bogdanov.island.field.Cell;
 
 public abstract class Animals extends Biosphere implements AbleToEat, Fertile, Movable {
 
-    public double weight;
-    public int populationOnCell;
-    public int speed;
-    public double diet;
-    // true - мужской, false - женский
-    public boolean gender;
-
-    public Animals(double weight, int populationOnCell, int speed, double diet, boolean gender) {
-        this.weight = weight;
-        this.populationOnCell = populationOnCell;
-        this.speed = speed;
-        this.diet = diet;
-        this.gender = gender;
+    public Animals(String name, double maxWeight, int maxPopulationOnCell, int maxSpeed, double maxDiet) {
+        super(name, maxWeight, maxPopulationOnCell, maxSpeed, maxDiet);
     }
 
     @Override
-    public void eat(Biosphere food) {
+    public void eat(Cell currentCell) {
 
     }
 
     @Override
-    public void multiple() {
+    public void multiple(Cell currentCell) {
 
     }
 
     @Override
-    public void move() {
-
+    public Cell move(Cell currentCell) {
+        return null;
     }
+
+
 }

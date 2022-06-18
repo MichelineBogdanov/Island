@@ -1,8 +1,12 @@
 package com.javarush.bogdanov.island.biosphere.animals.herbivores;
 
+import com.javarush.bogdanov.island.util.Util;
+
 public class Buffalo extends Herbivores {
 
-    public Buffalo(double weight, int populationOnCell, int speed, double diet, boolean gender) {
-        super(700, 10, 3, 100, gender);
+    public Buffalo() {
+        super("Буйвол", 700, 10, 3, 100);
+        this.setGender(Util.getRandomGender());
+        this.setWeight(Util.getRandomWeight(this.getMaxWeight()));
     }
 }
