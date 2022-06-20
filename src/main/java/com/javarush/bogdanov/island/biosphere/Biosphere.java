@@ -1,18 +1,19 @@
 package com.javarush.bogdanov.island.biosphere;
 
+import com.javarush.bogdanov.island.biosphere.actions.Fertile;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Getter
 @Setter
-public abstract class Biosphere {
+public abstract class Biosphere implements Fertile, Cloneable {
 
-    private final static AtomicLong idCounter = new AtomicLong(1);
+    private final static AtomicInteger idCounter = new AtomicInteger(1);
 
     // параметры отдельно взятого животного или растения
-    private final long id = idCounter.incrementAndGet();
+    private int id = idCounter.incrementAndGet();
     private double weight;
     // true - мужской, false - женский
     private boolean gender;
@@ -30,5 +31,32 @@ public abstract class Biosphere {
         this.maxPopulationOnCell = maxPopulationOnCell;
         this.maxSpeed = maxSpeed;
         this.maxDiet = maxDiet;
+    }
+
+    @Override
+    public Biosphere clone() throws CloneNotSupportedException {
+        Biosphere result = (Biosphere) super.clone();
+        result.id = idCounter.incrementAndGet();
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Biosphere biosphere = (Biosphere) o;
+        return id == biosphere.id
+                && Double.compare(biosphere.weight, weight) == 0
+                && gender == biosphere.gender
+                && Double.compare(biosphere.maxWeight, maxWeight) == 0
+                && maxPopulationOnCell == biosphere.maxPopulationOnCell
+                && maxSpeed == biosphere.maxSpeed
+                && Double.compare(biosphere.maxDiet, maxDiet) == 0
+                && name.equals(biosphere.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
     }
 }

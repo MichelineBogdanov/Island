@@ -14,4 +14,8 @@ public class Util {
         return random.nextDouble(maxWeight);
     }
 
+    public static int getRandomNumber(int bound) {
+        return random.nextInt(bound);
+    }
+
 }
