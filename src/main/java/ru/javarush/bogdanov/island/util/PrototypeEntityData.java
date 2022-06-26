@@ -3,6 +3,8 @@ package ru.javarush.bogdanov.island.util;
 import ru.javarush.bogdanov.island.biosphere.Biosphere;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
+import ru.javarush.bogdanov.island.constants.Constants;
+import ru.javarush.bogdanov.island.exceptions.GameException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -26,7 +28,7 @@ public class PrototypeEntityData {
         return result;
     }
 
-    private static Set<Class<?>> getAllClassesFromProject(String fullPackageName) {
+    public static Set<Class<?>> getAllClassesFromProject(String fullPackageName) {
         Set<Class<?>> subTypes = new HashSet<>();
         Collection<String> values = new Reflections(fullPackageName, new SubTypesScanner())
                 .getStore()
@@ -39,10 +41,32 @@ public class PrototypeEntityData {
                     subTypes.add(subType);
                 }
             } catch (ClassNotFoundException e) {
-                throw new RuntimeException("Этого не может быть:)", e);
+                throw new GameException("Класс не найден", e);
             }
         }
         return subTypes;
+    }
+
+    public static Class<? extends Biosphere> getClassByName(String name) {
+        Class<? extends Biosphere> result = null;
+        List<Biosphere> animalPrototypeList = getAnimalPrototypeList(Constants.BIOSPHERE_PACKAGE_NAME);
+        for (Biosphere biosphere : animalPrototypeList) {
+            if (biosphere.getClass().getSimpleName().equals(name)) {
+                result = biosphere.getClass();
+            }
+        }
+        return result;
+    }
+
+    public static String getNameByClass(Class<? extends Biosphere> clazz) {
+        String result = "";
+        List<Biosphere> animalPrototypeList = getAnimalPrototypeList(Constants.BIOSPHERE_PACKAGE_NAME);
+        for (Biosphere biosphere : animalPrototypeList) {
+            if (biosphere.getClass().equals(clazz)) {
+                result = biosphere.getName();
+            }
+        }
+        return result;
     }
 
 }

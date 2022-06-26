@@ -7,7 +7,7 @@ import ru.javarush.bogdanov.island.workers.MapWorker;
 
 public class Game {
 
-    public FieldCreator field = new FieldCreator();
+    public FieldCreator fieldCreator = new FieldCreator();
     public Viewer viewer = new Viewer();
     public AnimalActionWorker animalActionWorker = new AnimalActionWorker();
     public MapWorker mapWorker = new MapWorker();

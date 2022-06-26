@@ -28,18 +28,25 @@ public abstract class Biosphere implements Fertile, Growable, Cloneable {
     private final int maxPopulationOnCell;
     private final int maxSpeed;
     private final double maxDiet;
+    private final String icon;
 
-    public Biosphere(String name, double maxWeight, int maxPopulationOnCell, int maxSpeed, double maxDiet) {
+    public Biosphere(String name, double maxWeight, int maxPopulationOnCell, int maxSpeed, double maxDiet, String icon) {
         this.name = name;
         this.maxWeight = maxWeight;
         this.maxPopulationOnCell = maxPopulationOnCell;
         this.maxSpeed = maxSpeed;
         this.maxDiet = maxDiet;
+        this.icon = icon;
     }
 
     @Override
     public void multiple(Cell currentCell) {
         Map<String, Set<Biosphere>> cellAnimalCollection = currentCell.getCellAnimalCollection();
+
+    }
+
+    @Override
+    public void growAndLostWeight() {
 
     }
 

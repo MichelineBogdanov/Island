@@ -6,7 +6,7 @@ import ru.javarush.bogdanov.island.field.Cell;
 public class Plant extends Biosphere {
 
     public Plant() {
-        super("Растение", 1, 200, 0, 0);
+        super("Растение", 1, 200, 0, 0, "\u2F8B");
     }
 
     @Override
@@ -15,7 +15,7 @@ public class Plant extends Biosphere {
     }
 
     @Override
-    public void grow() {
+    public void growAndLostWeight() {
 
     }
 }
