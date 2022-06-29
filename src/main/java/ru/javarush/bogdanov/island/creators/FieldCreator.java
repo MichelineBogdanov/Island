@@ -23,6 +23,7 @@ public class FieldCreator {
                 fieldCells[row][col].findNeighbourCells(field, row, col);
             }
         }*/
+
         return new Field(fieldCells);
     }
 

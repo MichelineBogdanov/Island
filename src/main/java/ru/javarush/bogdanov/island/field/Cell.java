@@ -33,11 +33,12 @@ public class Cell {
         return this.cellAnimalCollection.get(type);
     }
 
-    public Map<String, Integer> getSpeciesWithMaxCountMap() {
-        return this.cellAnimalCollection.entrySet()
+    public Set<Biosphere> getAllAnimalsOnCellCollection() {
+        return this.cellAnimalCollection
+                .entrySet()
                 .stream()
-                .collect(Collectors.toMap(Map.Entry::getKey,
-                        (entry) -> entry.getValue().size()));
+                .flatMap(o -> o.getValue().stream())
+                .collect(Collectors.toSet());
     }
 
     public String[] getSpeciesWithMaxCount() {
@@ -53,21 +54,18 @@ public class Cell {
     }
 
     private String getMaxCount(Map<String, Integer> collect, Class<? extends Biosphere> clazz) {
-        String result = "";
+        String result = "\uD83D\uDC80";
         int max = 0;
-        String name = "";
         for (Map.Entry<String, Integer> stringIntegerEntry : collect.entrySet()) {
             Class<? extends Biosphere> checkedClass = getClassByName(stringIntegerEntry.getKey());
             if (clazz.isAssignableFrom(checkedClass)) {
                 if (stringIntegerEntry.getValue() > max) {
                     max = stringIntegerEntry.getValue();
-                    result = getNameByClass(checkedClass) + " " + stringIntegerEntry.getValue();
+                    result = getIconByClass(checkedClass) + " - " + stringIntegerEntry.getValue();
                 }
             } else if (checkedClass.getSimpleName().equals(clazz.getSimpleName())) {
-                result = getNameByClass(checkedClass) + " " + max;
-            } /*else {
-                result = clazz.getSimpleName() + " " + 0;
-            }*/
+                result = getIconByClass(checkedClass) + " - " + max;
+            }
         }
         return result;
     }

@@ -1,18 +1,16 @@
 package ru.javarush.bogdanov.island.biosphere;
 
-import ru.javarush.bogdanov.island.biosphere.actions.Fertile;
 import lombok.Getter;
 import lombok.Setter;
-import ru.javarush.bogdanov.island.biosphere.actions.Growable;
+import ru.javarush.bogdanov.island.biosphere.actions.Fertile;
 import ru.javarush.bogdanov.island.field.Cell;
+import ru.javarush.bogdanov.island.util.Util;
 
-import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Getter
 @Setter
-public abstract class Biosphere implements Fertile, Growable, Cloneable {
+public abstract class Biosphere implements Fertile, Cloneable {
 
     private final static AtomicInteger idCounter = new AtomicInteger(1);
 
@@ -21,6 +19,7 @@ public abstract class Biosphere implements Fertile, Growable, Cloneable {
     private double weight;
     // true - мужской, false - женский
     private boolean gender;
+    private boolean isAlive = true;
 
     // общие параметры для отдельно взятого вида
     private final String name;
@@ -41,13 +40,28 @@ public abstract class Biosphere implements Fertile, Growable, Cloneable {
 
     @Override
     public void multiple(Cell currentCell) {
-        Map<String, Set<Biosphere>> cellAnimalCollection = currentCell.getCellAnimalCollection();
-
-    }
-
-    @Override
-    public void growAndLostWeight() {
-
+        currentCell.getLock().lock();
+        try {
+            String type = this.getClass().getSimpleName();
+            int currentGenderCount = currentCell.getCellSpeciesGenderCollection(type, gender).size();
+            boolean neededGenderToMakeChild = !this.isGender();
+            int neededGenderCount = currentCell.getCellSpeciesGenderCollection(type, neededGenderToMakeChild).size();
+            int chance = Math.min(currentGenderCount, neededGenderCount);
+            if (Util.getRandomNumber(100) < chance
+                    && this.maxPopulationOnCell > currentGenderCount + neededGenderCount
+                    && isAlive()) {
+                double childWeight = this.getWeight() / 2;
+                try {
+                    Biosphere clone = this.clone();
+                    clone.setWeight(childWeight);
+                    currentCell.getCellAnimalCollection().get(type).add(clone);
+                } catch (CloneNotSupportedException e) {
+                    e.printStackTrace();
+                }
+            }
+        } finally {
+            currentCell.getLock().unlock();
+        }
     }
 
     @Override

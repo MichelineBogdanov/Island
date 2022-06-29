@@ -1,20 +1,31 @@
 package ru.javarush.bogdanov.island.field;
 
 import lombok.Getter;
-import ru.javarush.bogdanov.island.creators.FieldCreator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Field {
 
     @Getter
     private final Cell[][] field;
-    FieldCreator fieldCreator = new FieldCreator();
 
-    public Field(Cell[][] field) {
-        this.field = field;
+    public Field(Cell[][] cells) {
+        this.field = cells;
     }
 
     public Cell getCellFromField(int row, int col){
         return field[row][col];
+    }
+
+    public List<String[]> getListOfMaxSpeciesOnCellCount() {
+        List<String[]> result = new ArrayList<>();
+        for (Cell[] row : field) {
+            for (Cell cell : row) {
+                result.add(cell.getSpeciesWithMaxCount());
+            }
+        }
+        return result;
     }
 
 

@@ -58,12 +58,12 @@ public class PrototypeEntityData {
         return result;
     }
 
-    public static String getNameByClass(Class<? extends Biosphere> clazz) {
+    public static String getIconByClass(Class<? extends Biosphere> clazz) {
         String result = "";
         List<Biosphere> animalPrototypeList = getAnimalPrototypeList(Constants.BIOSPHERE_PACKAGE_NAME);
         for (Biosphere biosphere : animalPrototypeList) {
             if (biosphere.getClass().equals(clazz)) {
-                result = biosphere.getName();
+                result = biosphere.getIcon();
             }
         }
         return result;
