@@ -1,6 +1,5 @@
 package ru.javarush.bogdanov.island.workers;
 
-import ru.javarush.bogdanov.island.creators.FieldCreator;
 import ru.javarush.bogdanov.island.field.Field;
 import ru.javarush.bogdanov.island.game.Game;
 import ru.javarush.bogdanov.island.viewer.Viewer;
@@ -22,10 +21,10 @@ public class GameWorker implements Runnable {
 
     @Override
     public void run() {
-        FieldCreator fieldCreator = new FieldCreator();
-        Field field = fieldCreator.initField();
         Viewer viewer = game.viewer;
-        viewer.showField(field);
+        Field field = game.getField();
+        viewer.showField();
+        System.out.println("init completed!");
         //viewer.showStatistic(field);
 
         ScheduledExecutorService mainPool = Executors.newScheduledThreadPool(CORE_POOL_SIZE);
@@ -53,8 +52,8 @@ public class GameWorker implements Runnable {
 
     private void awaitPool(Viewer view, ExecutorService servicePool, Field field) throws InterruptedException {
         if (servicePool.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS)) {
-            view.showField(field);
-            view.showStatistic(field);
+            view.showField();
+            //view.showStatistic(field);
         }
     }
 
