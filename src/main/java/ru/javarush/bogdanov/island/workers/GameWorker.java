@@ -12,12 +12,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Getter
 @Setter
 public class GameWorker implements Runnable {
-    private static final int CORE_POOL_SIZE = 8;
+    private static final int CORE_POOL_SIZE = 4;
     private final Game game;
+    private final AtomicInteger DAYS_COUNT = new AtomicInteger(0);
 
     public GameWorker(Game game) {
         this.game = game;
@@ -25,6 +27,7 @@ public class GameWorker implements Runnable {
 
     @Override
     public void run() {
+        System.out.println("Day -" + DAYS_COUNT.get());
         Viewer viewer = game.viewer;
         Field field = game.getField();
         viewer.showField();
@@ -52,6 +55,7 @@ public class GameWorker implements Runnable {
 
     private void awaitPool(Viewer view, ExecutorService servicePool) throws InterruptedException {
         if (servicePool.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS)) {
+            System.out.println("Day -" + DAYS_COUNT.incrementAndGet());
             view.showField();
         }
     }

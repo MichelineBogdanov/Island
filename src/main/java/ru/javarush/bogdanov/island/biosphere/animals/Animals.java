@@ -15,15 +15,36 @@ public abstract class Animals extends Biosphere implements AbleToEat, Movable {
     }
 
     @Override
-    public void eat(Cell currentCell) {
+    public void safeEat(Cell currentCell) {
+        currentCell.getLock().lock();
+        try {
+            findFood(currentCell);
+            if (this.getWeight() > this.getMaxWeight() * 0.5) {
+                LoseWeight();
+            } else {
+                die(currentCell);
+            }
+        } finally {
+            currentCell.getLock().unlock();
+        }
+    }
 
+    private void findFood(Cell currentCell) {
+
+    }
+
+    private void LoseWeight() {
+        this.setWeight(this.getMaxWeight() * 0.1);
+    }
+
+    private void die(Cell currentCell) {
+        //currentCell.getCellAnimalCollection().entrySet().remove(this);
     }
 
     @Override
-    public Cell move(Cell currentCell) {
+    public Cell safeMove(Cell currentCell) {
         return null;
     }
-
 
 
     protected int getProbabilityOfEating(Biosphere target) {

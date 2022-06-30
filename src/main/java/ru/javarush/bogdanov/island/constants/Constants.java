@@ -2,8 +2,8 @@ package ru.javarush.bogdanov.island.constants;
 
 public class Constants {
 
-    public static final int ISLAND_COLUMNS = 4;
-    public static final int ISLAND_ROWS = 4;
+    public static final int ISLAND_COLUMNS = 5;
+    public static final int ISLAND_ROWS = 5;
     public static final String BIOSPHERE_PACKAGE_NAME = "ru.javarush.bogdanov.island.biosphere";
     public static final String[] ANIMAL_NAMES = {
             "Волк", "Удав", "Лиса", "Медведь", "Орел",

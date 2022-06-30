@@ -4,6 +4,6 @@ import ru.javarush.bogdanov.island.field.Cell;
 
 public interface Movable {
 
-    Cell move(Cell currentCell);
+    Cell safeMove(Cell currentCell);
 
 }

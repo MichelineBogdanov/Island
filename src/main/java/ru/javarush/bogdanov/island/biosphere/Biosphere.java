@@ -39,7 +39,7 @@ public abstract class Biosphere implements Fertile, Cloneable {
     }
 
     @Override
-    public void multiple(Cell currentCell) {
+    public void safeMultiple(Cell currentCell) {
         currentCell.getLock().lock();
         try {
             String type = this.getClass().getSimpleName();

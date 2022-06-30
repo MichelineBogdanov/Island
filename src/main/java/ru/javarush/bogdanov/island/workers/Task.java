@@ -14,7 +14,7 @@ public class Task {
     }
 
     public void doTask() {
-        organism.multiple(cell);
+        organism.safeMultiple(cell);
     }
 
 }
