@@ -55,7 +55,7 @@ public class GameWorker implements Runnable {
 
     private void awaitPool(Viewer view, ExecutorService servicePool) throws InterruptedException {
         if (servicePool.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS)) {
-            System.out.println("Day -" + DAYS_COUNT.incrementAndGet());
+            System.out.println("Day - " + DAYS_COUNT.incrementAndGet());
             view.showField();
         }
     }
