@@ -6,7 +6,8 @@ import ru.javarush.bogdanov.island.biosphere.actions.Movable;
 import ru.javarush.bogdanov.island.constants.Constants;
 import ru.javarush.bogdanov.island.field.Cell;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Animals extends Biosphere implements AbleToEat, Movable {
 
@@ -18,9 +19,16 @@ public abstract class Animals extends Biosphere implements AbleToEat, Movable {
     public void safeEat(Cell currentCell) {
         currentCell.getLock().lock();
         try {
-            findFood(currentCell);
-            if (this.getWeight() > this.getMaxWeight() * 0.5) {
-                LoseWeight();
+            double eatenFood = 0;
+            while (eatenFood < this.getMaxDiet()) {
+                if (findFood(currentCell) != 0) {
+                    eatenFood += findFood(currentCell);
+                } else {
+                    break;
+                }
+            }
+            if (this.getWeight() > this.getMaxWeight() / 5) {
+                loseWeight();
             } else {
                 die(currentCell);
             }
@@ -29,11 +37,11 @@ public abstract class Animals extends Biosphere implements AbleToEat, Movable {
         }
     }
 
-    private void findFood(Cell currentCell) {
-
+    private double findFood(Cell currentCell) {
+        return 0;
     }
 
-    private void LoseWeight() {
+    private void loseWeight() {
         this.setWeight(this.getMaxWeight() * 0.1);
     }
 
@@ -46,10 +54,15 @@ public abstract class Animals extends Biosphere implements AbleToEat, Movable {
         return null;
     }
 
+    public List<Integer> getChanceRateAnimalTarget() {
+        List<Integer> result = new ArrayList<>();
 
-    protected int getProbabilityOfEating(Biosphere target) {
-        int namePositionOfHunter = Arrays.asList(Constants.ANIMAL_NAMES).indexOf(this.getName());
-        int namePositionOfTarget = Arrays.asList(Constants.ANIMAL_NAMES).indexOf(target.getName());
-        return Constants.CHANCE_TO_EAT[namePositionOfHunter][namePositionOfTarget];
+        int position = Constants.ANIMAL_NAMES.indexOf(this.getName());
+        int[] foodMap = Constants.CHANCE_TO_EAT[position];
+        /*for (int i = 0; i < foodMap.length; i++) {
+
+        }*/
+        return result;
     }
+
 }

@@ -50,7 +50,7 @@ public abstract class Biosphere implements Fertile, Cloneable {
             if (Util.getRandomNumber(100) < chance
                     && this.maxPopulationOnCell > currentGenderCount + neededGenderCount
                     && isAlive()) {
-                double childWeight = this.getWeight() / 2;
+                double childWeight = this.getMaxWeight() / 4;
                 try {
                     Biosphere clone = this.clone();
                     clone.setWeight(childWeight);

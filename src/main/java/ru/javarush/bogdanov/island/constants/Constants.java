@@ -1,15 +1,31 @@
 package ru.javarush.bogdanov.island.constants;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Constants {
 
     public static final int ISLAND_COLUMNS = 5;
     public static final int ISLAND_ROWS = 5;
     public static final String BIOSPHERE_PACKAGE_NAME = "ru.javarush.bogdanov.island.biosphere";
-    public static final String[] ANIMAL_NAMES = {
-            "Волк", "Удав", "Лиса", "Медведь", "Орел",
-            "Лошадь", "Олень", "Кролик", "Мышь", "Коза", "Овца", "Кабан", "Буйвол", "Утка", "Гусеница",
-            "Растение",
-    };
+    public static final List<String> ANIMAL_NAMES = new ArrayList<>() {{
+        add("Волк");
+        add("Удав");
+        add("Лиса");
+        add("Медведь");
+        add("Орел");
+        add("Лошадь");
+        add("Олень");
+        add("Кролик");
+        add("Мышь");
+        add("Коза");
+        add("Овца");
+        add("Кабан");
+        add("Буйвол");
+        add("Утка");
+        add("Гусеница");
+        add("Растение");
+    }};
     public static final int[][] CHANCE_TO_EAT = {
             {0, 0, 0, 0, 0, 10, 15, 60, 80, 60, 70, 15, 10, 40, 0, 0},
             {0, 0, 15, 0, 0, 0, 0, 20, 40, 0, 0, 0, 0, 10, 0, 0},
@@ -28,5 +44,4 @@ public class Constants {
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 100},
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     };
-
 }

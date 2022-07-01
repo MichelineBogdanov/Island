@@ -3,14 +3,18 @@ package ru.javarush.bogdanov.island.creators;
 import ru.javarush.bogdanov.island.biosphere.Biosphere;
 import ru.javarush.bogdanov.island.constants.Constants;
 import ru.javarush.bogdanov.island.field.Cell;
-import ru.javarush.bogdanov.island.util.PrototypeEntityData;
 import ru.javarush.bogdanov.island.util.Util;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import static ru.javarush.bogdanov.island.util.PrototypeEntityData.getAnimalPrototypeList;
 
 public class CellCreator {
 
-    private final List<Biosphere> listOfPrototypes = PrototypeEntityData.getAnimalPrototypeList(Constants.BIOSPHERE_PACKAGE_NAME);
+    private final List<Biosphere> listOfPrototypes = getAnimalPrototypeList(Constants.BIOSPHERE_PACKAGE_NAME);
 
     public Cell initCell() {
         Cell result = new Cell();

@@ -1,9 +1,8 @@
 package ru.javarush.bogdanov.island.util;
 
-import ru.javarush.bogdanov.island.biosphere.Biosphere;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
-import ru.javarush.bogdanov.island.constants.Constants;
+import ru.javarush.bogdanov.island.biosphere.Biosphere;
 import ru.javarush.bogdanov.island.exceptions.GameException;
 
 import java.lang.reflect.Constructor;
@@ -47,10 +46,9 @@ public class PrototypeEntityData {
         return subTypes;
     }
 
-    public static Class<? extends Biosphere> getClassByName(String name) {
+    public static Class<? extends Biosphere> getClassByName(String name, List<Biosphere> listOfPrototypes) {
         Class<? extends Biosphere> result = null;
-        List<Biosphere> animalPrototypeList = getAnimalPrototypeList(Constants.BIOSPHERE_PACKAGE_NAME);
-        for (Biosphere biosphere : animalPrototypeList) {
+        for (Biosphere biosphere : listOfPrototypes) {
             if (biosphere.getClass().getSimpleName().equals(name)) {
                 result = biosphere.getClass();
             }
@@ -58,10 +56,9 @@ public class PrototypeEntityData {
         return result;
     }
 
-    public static String getIconByClass(Class<? extends Biosphere> clazz) {
+    public static String getIconByClass(Class<? extends Biosphere> clazz, List<Biosphere> listOfPrototypes) {
         String result = "";
-        List<Biosphere> animalPrototypeList = getAnimalPrototypeList(Constants.BIOSPHERE_PACKAGE_NAME);
-        for (Biosphere biosphere : animalPrototypeList) {
+        for (Biosphere biosphere : listOfPrototypes) {
             if (biosphere.getClass().equals(clazz)) {
                 result = biosphere.getIcon();
             }

@@ -27,7 +27,7 @@ public class GameWorker implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("Day -" + DAYS_COUNT.get());
+        System.out.println("Day - " + DAYS_COUNT.get());
         Viewer viewer = game.viewer;
         Field field = game.getField();
         viewer.showField();

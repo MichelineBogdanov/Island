@@ -57,14 +57,14 @@ public class Cell {
         String result = "\uD83D\uDC80";
         int max = 0;
         for (Map.Entry<String, Integer> stringIntegerEntry : collect.entrySet()) {
-            Class<? extends Biosphere> checkedClass = getClassByName(stringIntegerEntry.getKey());
+            Class<? extends Biosphere> checkedClass = getClassByName(stringIntegerEntry.getKey(), listOfPrototypes);
             if (clazz.isAssignableFrom(checkedClass)) {
                 if (stringIntegerEntry.getValue() > max) {
                     max = stringIntegerEntry.getValue();
-                    result = getIconByClass(checkedClass) + " - " + stringIntegerEntry.getValue();
+                    result = getIconByClass(checkedClass, listOfPrototypes) + " - " + stringIntegerEntry.getValue();
                 }
             } else if (checkedClass.getSimpleName().equals(clazz.getSimpleName())) {
-                result = getIconByClass(checkedClass) + " - " + max;
+                result = getIconByClass(checkedClass, listOfPrototypes) + " - " + max;
             }
         }
         return result;
