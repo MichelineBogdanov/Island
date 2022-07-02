@@ -18,13 +18,13 @@ public class FieldCreator {
                 fieldCells[row][col] = cellCreator.initCell();
             }
         }
-        /*for (int row = 0; row < fieldCells.length; row++) {
+        Field field = new Field(fieldCells);
+        for (int row = 0; row < fieldCells.length; row++) {
             for (int col = 0; col < fieldCells[0].length; col++) {
                 fieldCells[row][col].findNeighbourCells(field, row, col);
             }
-        }*/
-
-        return new Field(fieldCells);
+        }
+        return field;
     }
 
 }

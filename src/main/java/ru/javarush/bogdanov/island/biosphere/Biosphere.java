@@ -53,7 +53,8 @@ public abstract class Biosphere implements Fertile, Cloneable {
                 double childWeight = this.getMaxWeight() / 4;
                 try {
                     Biosphere clone = this.clone();
-                    clone.setWeight(childWeight);
+                    clone.safeSetWeight(currentCell, childWeight);
+                    //System.out.println(clone.name + " родился");
                     currentCell.getCellAnimalCollection().get(type).add(clone);
                 } catch (CloneNotSupportedException e) {
                     e.printStackTrace();
@@ -63,6 +64,27 @@ public abstract class Biosphere implements Fertile, Cloneable {
             currentCell.getLock().unlock();
         }
     }
+
+    public void safeSetWeight(Cell currentCell, double weight) {
+        currentCell.getLock().lock();
+        try {
+            this.weight = weight;
+        } finally {
+            currentCell.getLock().unlock();
+        }
+    }
+
+    /*protected boolean safeMove(Cell source, Cell destination) {
+        if (safeAddTo(destination)) { //if was added
+            if (safePollFrom(source)) { //and after was extract
+                return true; //ok
+            } else {
+                safePollFrom(destination); //died or eaten
+            }
+        }
+        return false;
+    }*/
+
 
     @Override
     public Biosphere clone() throws CloneNotSupportedException {
@@ -90,4 +112,5 @@ public abstract class Biosphere implements Fertile, Cloneable {
     public int hashCode() {
         return id;
     }
+
 }

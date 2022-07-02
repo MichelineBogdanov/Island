@@ -4,6 +4,6 @@ import ru.javarush.bogdanov.island.field.Cell;
 
 public interface AbleToEat {
 
-    void safeEat(Cell currentCell);
+    void eat(Cell currentCell);
 
 }

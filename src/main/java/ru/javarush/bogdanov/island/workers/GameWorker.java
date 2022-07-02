@@ -31,6 +31,7 @@ public class GameWorker implements Runnable {
         Viewer viewer = game.viewer;
         Field field = game.getField();
         viewer.showField();
+        viewer.showStatistic();
         ScheduledExecutorService mainPool = Executors.newScheduledThreadPool(CORE_POOL_SIZE);
         List<CellWorker> workers = Arrays.stream(field.getField())
                 .flatMap(Arrays::stream)
@@ -57,6 +58,7 @@ public class GameWorker implements Runnable {
         if (servicePool.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS)) {
             System.out.println("Day - " + DAYS_COUNT.incrementAndGet());
             view.showField();
+            view.showStatistic();
         }
     }
 

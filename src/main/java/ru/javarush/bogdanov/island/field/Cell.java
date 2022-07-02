@@ -7,6 +7,7 @@ import ru.javarush.bogdanov.island.biosphere.animals.herbivores.Herbivores;
 import ru.javarush.bogdanov.island.biosphere.animals.predators.Predators;
 import ru.javarush.bogdanov.island.biosphere.plants.Plant;
 import ru.javarush.bogdanov.island.constants.Constants;
+import ru.javarush.bogdanov.island.util.Util;
 
 import java.util.*;
 import java.util.concurrent.locks.Lock;
@@ -24,6 +25,7 @@ public class Cell {
     private Map<String, Set<Biosphere>> cellAnimalCollection = new HashMap<>();
     @Getter
     private final Lock lock = new ReentrantLock(true);
+    @Getter
     private final List<Biosphere> listOfPrototypes = getAnimalPrototypeList(Constants.BIOSPHERE_PACKAGE_NAME);
 
     public Cell() {
@@ -82,6 +84,27 @@ public class Cell {
         if (col > 0) neighbourCell.add(field.getCellFromField(row, col - 1));
         if (row < field.getField().length - 1) neighbourCell.add(field.getCellFromField(row + 1, col));
         if (col < field.getField()[0].length - 1) neighbourCell.add(field.getCellFromField(row, col + 1));
+    }
+
+    public Cell getNextCell(int countStep) {
+        Set<Cell> visitedCells = new HashSet<>();
+        Cell currentCell = this;
+        while (visitedCells.size() < countStep) {
+            var nextCells = currentCell
+                    .neighbourCell
+                    .stream()
+                    .filter(cell -> !visitedCells.contains(cell))
+                    .toList();
+            int countDirections = nextCells.size();
+            if (countDirections > 0) {
+                int index = Util.random(0, countDirections);
+                currentCell = nextCells.get(nextCells.size() - 1 - index);
+                visitedCells.add(currentCell);
+            } else {
+                break;
+            }
+        }
+        return currentCell;
     }
 
     @Override
