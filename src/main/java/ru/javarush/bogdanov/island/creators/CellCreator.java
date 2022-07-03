@@ -29,7 +29,7 @@ public class CellCreator {
                     try {
                         Biosphere candidate = prototype.clone();
                         candidate.setGender(Util.getRandomGender());
-                        candidate.safeSetWeight(Util.getRandomWeight(candidate.getMaxWeight()));
+                        candidate.safeSetWeight(result, Util.getRandomWeight(candidate.getMaxWeight()));
                         animalSetOnCell.add(candidate);
                     } catch (CloneNotSupportedException e) {
                         e.printStackTrace();

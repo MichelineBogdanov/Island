@@ -7,6 +7,7 @@ import ru.javarush.bogdanov.island.biosphere.plants.Plant;
 import ru.javarush.bogdanov.island.constants.Constants;
 import ru.javarush.bogdanov.island.field.Cell;
 import ru.javarush.bogdanov.island.field.Field;
+import ru.javarush.bogdanov.island.util.PrototypeEntityData;
 
 import java.util.HashMap;
 import java.util.List;
@@ -55,18 +56,22 @@ public class Viewer {
                 }
             }
         }
-        Set<Map.Entry<String, Integer>> entries = result.entrySet();
-        showSubSpecies(entries, Plant.class);
-        showSubSpecies(entries, Herbivores.class);
-        showSubSpecies(entries, Predators.class);
-        for (Map.Entry<String, Integer> stringIntegerEntry : result.entrySet()) {
-            System.out.print(stringIntegerEntry.getKey() + " = " + stringIntegerEntry.getValue() + "│");
-        }
-        System.out.println();
+        showSubSpecies(result, Plant.class, listOfPrototypes);
+        showSubSpecies(result, Herbivores.class, listOfPrototypes);
+        showSubSpecies(result, Predators.class, listOfPrototypes);
     }
 
-    private void showSubSpecies(Set<Map.Entry<String, Integer>> entries, Class<? extends Biosphere> clazz) {
-
+    private void showSubSpecies(Map<String, Integer> result, Class<? extends Biosphere> clazz, List<Biosphere> listOfPrototypes) {
+        Set<Map.Entry<String, Integer>> entries = result.entrySet();
+        System.out.println(clazz.getSimpleName());
+        for (Map.Entry<String, Integer> stringIntegerEntry : entries) {
+            if (clazz.isAssignableFrom(PrototypeEntityData.getClassByName(stringIntegerEntry.getKey(), listOfPrototypes))) {
+                System.out.print(stringIntegerEntry.getKey() + " = " + stringIntegerEntry.getValue() + "│");
+            } else if (clazz.getSimpleName().equals(stringIntegerEntry.getKey())) {
+                System.out.print(stringIntegerEntry.getKey() + " = " + stringIntegerEntry.getValue() + "│");
+            }
+        }
+        System.out.println();
     }
 
     public void showForTestStatistic() {

@@ -25,6 +25,10 @@ public class GameWorker implements Runnable {
         this.game = game;
     }
 
+    //При выполнении задач (скорее всего в методе eat(), а конкретно в safeFindFood()) возникают
+    //"сломанные" животные, которые не едят и не худеют, и у которых не устанавливается флаг мертв.
+    //(непонятно выполняются ли у них остальные методы)
+    //Они просто остаются в списке.
     @Override
     public void run() {
         System.out.println("Day - " + DAYS_COUNT.get());
@@ -33,6 +37,7 @@ public class GameWorker implements Runnable {
         viewer.showField();
         viewer.showStatistic();
         //viewer.showForTestStatistic();
+        System.out.println("*--------------------------------------------*");
         ScheduledExecutorService mainPool = Executors.newScheduledThreadPool(CORE_POOL_SIZE);
         List<CellWorker> workers = Arrays.stream(field.getField())
                 .flatMap(Arrays::stream)
@@ -61,6 +66,7 @@ public class GameWorker implements Runnable {
             view.showField();
             view.showStatistic();
             //view.showForTestStatistic();
+            System.out.println("*--------------------------------------------*");
         }
     }
 

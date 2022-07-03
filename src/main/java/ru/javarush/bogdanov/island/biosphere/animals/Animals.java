@@ -21,10 +21,17 @@ public abstract class Animals extends Biosphere implements AbleToEat, Movable {
 
     @Override
     public void eat(Cell currentCell) {
+        double eatenFood = 0;
         if (this.isAlive()) {
-            if (this.safeFindFood(currentCell) == 0) {
-                this.safeSetWeight(this.getWeight() * 0.9);
-            }
+            /*while (eatenFood < this.getMaxDiet()) {
+                double food = this.safeFindFood(currentCell);
+                if (food != 0) {
+                    eatenFood += food;
+                } else {
+                    break;
+                }
+            }*/
+            this.safeSetWeight(currentCell, this.getWeight() * 0.9);
             if (this.getWeight() < this.getMaxWeight() / 5) {
                 safeDie(currentCell);
             }
@@ -33,6 +40,22 @@ public abstract class Animals extends Biosphere implements AbleToEat, Movable {
         }
     }
 
+    @Override
+    public boolean move(Cell currentCell) {
+        int countStep = this
+                .getMaxSpeed();
+        Cell destinationCell = currentCell.getNextCell(countStep);
+        return safeMove(currentCell, destinationCell);
+    }
+
+    //При выполнении задач (скорее всего в методе eat(), а конкретно в safeFindFood()) возникают
+    //"сломанные" животные, которые не едят и не худеют, и у которых не устанавливается флаг мертв.
+    //(непонятно выполняются ли у них остальные методы)
+    //Они просто остаются в списке.
+    //
+    //Возможно это из за того, что при проходе цикла метода eat() в наш поток в какой то промежуточный этап между циклами
+    //или переходами к другим методам ячейку захватывает другой поток и вносит в наш изменения
+    //надо попробовать перенести полное возможное насыщение животного в метод safeFindFood()
     private double safeFindFood(Cell currentCell) {
         currentCell.getLock().lock();
         try {
@@ -46,10 +69,10 @@ public abstract class Animals extends Biosphere implements AbleToEat, Movable {
                 String targetName = Constants.ANIMAL_NAMES.get(integer);
                 //получаем сет жертв в ячейке
                 Set<Biosphere> targetSet = currentCell.getCellAnimalCollection().get(targetName);
-                //проходимся по нему
                 if (targetSet.size() == 0) {
                     continue;
                 }
+                //проходимся по нему
                 for (Biosphere target : targetSet) {
                     //проверяем сможем ли скушать жертву
                     if (Util.getRandomNumber(100) < Constants.CHANCE_TO_EAT[position][integer] && target.isAlive() && target.getWeight() != 0) {
@@ -60,17 +83,17 @@ public abstract class Animals extends Biosphere implements AbleToEat, Movable {
                         double thisWeight = this.getWeight();
                         double targetWeight = target.getWeight();
                         if (targetWeight < maxDiet) {
-                            this.safeSetWeight(Math.min(thisWeight + targetWeight, maxWeight));
+                            this.safeSetWeight(currentCell, Math.min(thisWeight + targetWeight, maxWeight));
                         } else {
-                            this.safeSetWeight(Math.min(thisWeight + maxDiet, maxWeight));
+                            this.safeSetWeight(currentCell, Math.min(thisWeight + maxDiet, maxWeight));
                         }
                         //тут устанавливаем жертве статус мертвеца, чтобы потом в задаче у этого животного его просто убить, а не выполнять его операции
                         if (target instanceof Animals) {
-                            target.setAlive(false);
+                            target.safeSetAlive(currentCell, false);
                         } else {
-                            target.safeSetWeight(0);
+                            target.safeSetWeight(currentCell, 0);
                         }
-                        //System.out.println(this.getName() + this.getId() + " съел " + targetName);
+                        //System.out.println(this.getName() + this.getId() + " съел " + targetName + target.getId());
                         return this.getWeight() - thisWeight;
                     }
                 }
@@ -81,23 +104,15 @@ public abstract class Animals extends Biosphere implements AbleToEat, Movable {
         }
     }
 
-
     private void safeDie(Cell currentCell) {
         currentCell.getLock().lock();
         try {
-            //нужны ли локи, если мы итак залочили ячейку во всех методах, в которых используем этот метод???
+            //нужны ли локи, если мы итак залочили ячейку во всех методах, в которых используем этот метод?
+            //есл ииспользовать syncronized в сигнатуре метода, какие будут преимущества и возможные проблемы?
             currentCell.getCellAnimalCollection().get(this.getClass().getSimpleName()).remove(this);
         } finally {
             currentCell.getLock().unlock();
         }
-    }
-
-    @Override
-    public boolean move(Cell currentCell) {
-        int countStep = this
-                .getMaxSpeed();
-        Cell destinationCell = currentCell.getNextCell(countStep);
-        return safeMove(currentCell, destinationCell);
     }
 
     public List<Integer> getChanceRateAnimalTarget() {

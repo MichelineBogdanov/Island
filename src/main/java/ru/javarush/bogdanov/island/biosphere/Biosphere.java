@@ -54,7 +54,7 @@ public abstract class Biosphere implements Fertile, Cloneable {
                 double childWeight = this.getMaxWeight() / 4;
                 try {
                     Biosphere clone = this.clone();
-                    clone.safeSetWeight(childWeight);
+                    clone.safeSetWeight(currentCell, childWeight);
                     //System.out.println(clone.name + " родился");
                     currentCell.getCellAnimalCollection().get(type).add(clone);
                 } catch (CloneNotSupportedException e) {
@@ -66,12 +66,22 @@ public abstract class Biosphere implements Fertile, Cloneable {
         }
     }
 
-    public synchronized void safeSetWeight(double weight) {
-        this.weight = weight;
+    public void safeSetWeight(Cell currentCell, double weight) {
+        currentCell.getLock().lock();
+        try {
+            this.weight = weight;
+        } finally {
+            currentCell.getLock().unlock();
+        }
     }
 
-    public synchronized void setAlive(boolean alive) {
-        isAlive = alive;
+    public void safeSetAlive(Cell currentCell, boolean alive) {
+        currentCell.getLock().lock();
+        try {
+            isAlive = alive;
+        } finally {
+            currentCell.getLock().unlock();
+        }
     }
 
     protected boolean safeMove(Cell source, Cell destination) {
@@ -85,29 +95,29 @@ public abstract class Biosphere implements Fertile, Cloneable {
         return false;
     }
 
-    protected boolean safeAddTo(Cell cell) {
-        cell.getLock().lock();
+    protected boolean safeAddTo(Cell currentCell) {
+        currentCell.getLock().lock();
         try {
-            Set<Biosphere> biospheres = cell
+            Set<Biosphere> biospheres = currentCell
                     .getCellAnimalCollection()
                     .get(this.getClass().getSimpleName());
             int maxCount = getMaxPopulationOnCell();
             int size = biospheres.size();
             return size < maxCount && biospheres.add(this);
         } finally {
-            cell.getLock().unlock();
+            currentCell.getLock().unlock();
         }
     }
 
-    protected boolean safePollFrom(Cell cell) {
-        cell.getLock().lock();
+    protected boolean safePollFrom(Cell currentCell) {
+        currentCell.getLock().lock();
         try {
-            Set<Biosphere> biospheres = cell
+            Set<Biosphere> biospheres = currentCell
                     .getCellAnimalCollection()
                     .get(this.getClass().getSimpleName());
             return biospheres.remove(this);
         } finally {
-            cell.getLock().unlock();
+            currentCell.getLock().unlock();
         }
     }
 

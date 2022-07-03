@@ -16,7 +16,7 @@ public class Plant extends Biosphere implements Growable {
         try {
             if (this.getWeight() < this.getMaxWeight()) {
 
-                this.safeSetWeight(this.getWeight() + (this.getMaxWeight() - this.getWeight()) * 0.5);
+                this.safeSetWeight(currentCell,this.getWeight() + (this.getMaxWeight() - this.getWeight()) * 0.5);
             }
         } finally {
             currentCell.getLock().unlock();
