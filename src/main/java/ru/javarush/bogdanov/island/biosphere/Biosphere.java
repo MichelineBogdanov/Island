@@ -6,6 +6,7 @@ import ru.javarush.bogdanov.island.biosphere.actions.Fertile;
 import ru.javarush.bogdanov.island.field.Cell;
 import ru.javarush.bogdanov.island.util.Util;
 
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Getter
@@ -53,7 +54,7 @@ public abstract class Biosphere implements Fertile, Cloneable {
                 double childWeight = this.getMaxWeight() / 4;
                 try {
                     Biosphere clone = this.clone();
-                    clone.safeSetWeight(currentCell, childWeight);
+                    clone.safeSetWeight(childWeight);
                     //System.out.println(clone.name + " родился");
                     currentCell.getCellAnimalCollection().get(type).add(clone);
                 } catch (CloneNotSupportedException e) {
@@ -65,25 +66,50 @@ public abstract class Biosphere implements Fertile, Cloneable {
         }
     }
 
-    public void safeSetWeight(Cell currentCell, double weight) {
-        currentCell.getLock().lock();
-        try {
-            this.weight = weight;
-        } finally {
-            currentCell.getLock().unlock();
-        }
+    public synchronized void safeSetWeight(double weight) {
+        this.weight = weight;
     }
 
-    /*protected boolean safeMove(Cell source, Cell destination) {
-        if (safeAddTo(destination)) { //if was added
-            if (safePollFrom(source)) { //and after was extract
-                return true; //ok
+    public synchronized void setAlive(boolean alive) {
+        isAlive = alive;
+    }
+
+    protected boolean safeMove(Cell source, Cell destination) {
+        if (safeAddTo(destination)) {
+            if (safePollFrom(source)) {
+                return true;
             } else {
-                safePollFrom(destination); //died or eaten
+                safePollFrom(destination);
             }
         }
         return false;
-    }*/
+    }
+
+    protected boolean safeAddTo(Cell cell) {
+        cell.getLock().lock();
+        try {
+            Set<Biosphere> biospheres = cell
+                    .getCellAnimalCollection()
+                    .get(this.getClass().getSimpleName());
+            int maxCount = getMaxPopulationOnCell();
+            int size = biospheres.size();
+            return size < maxCount && biospheres.add(this);
+        } finally {
+            cell.getLock().unlock();
+        }
+    }
+
+    protected boolean safePollFrom(Cell cell) {
+        cell.getLock().lock();
+        try {
+            Set<Biosphere> biospheres = cell
+                    .getCellAnimalCollection()
+                    .get(this.getClass().getSimpleName());
+            return biospheres.remove(this);
+        } finally {
+            cell.getLock().unlock();
+        }
+    }
 
 
     @Override
@@ -113,4 +139,13 @@ public abstract class Biosphere implements Fertile, Cloneable {
         return id;
     }
 
+    @Override
+    public String toString() {
+        return "Biosphere{" +
+                "name='" + name + '\'' +
+                ", id=" + id +
+                ", weight=" + weight +
+                ", isAlive=" + isAlive +
+                '}';
+    }
 }

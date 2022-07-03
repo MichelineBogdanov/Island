@@ -5,8 +5,8 @@ import java.util.List;
 
 public class Constants {
 
-    public static final int ISLAND_COLUMNS = 1;
-    public static final int ISLAND_ROWS = 1;
+    public static final int ISLAND_COLUMNS = 10;
+    public static final int ISLAND_ROWS = 10;
     public static final String BIOSPHERE_PACKAGE_NAME = "ru.javarush.bogdanov.island.biosphere";
     public static final List<String> ANIMAL_NAMES = new ArrayList<>() {{
         add("Wolf");

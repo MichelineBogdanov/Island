@@ -90,15 +90,15 @@ public class Cell {
         Set<Cell> visitedCells = new HashSet<>();
         Cell currentCell = this;
         while (visitedCells.size() < countStep) {
-            var nextCells = currentCell
+            List<Cell> cells = currentCell
                     .neighbourCell
                     .stream()
                     .filter(cell -> !visitedCells.contains(cell))
                     .toList();
-            int countDirections = nextCells.size();
+            int countDirections = cells.size();
             if (countDirections > 0) {
                 int index = Util.random(0, countDirections);
-                currentCell = nextCells.get(nextCells.size() - 1 - index);
+                currentCell = cells.get(cells.size() - 1 - index);
                 visitedCells.add(currentCell);
             } else {
                 break;

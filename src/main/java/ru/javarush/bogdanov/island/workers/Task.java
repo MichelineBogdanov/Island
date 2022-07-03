@@ -2,6 +2,7 @@ package ru.javarush.bogdanov.island.workers;
 
 import ru.javarush.bogdanov.island.biosphere.Biosphere;
 import ru.javarush.bogdanov.island.biosphere.animals.Animals;
+import ru.javarush.bogdanov.island.biosphere.plants.Plant;
 import ru.javarush.bogdanov.island.field.Cell;
 
 public class Task {
@@ -17,8 +18,11 @@ public class Task {
     public void doTask() {
         if (organism instanceof Animals animal) {
             animal.eat(cell);
+            animal.move(cell);
+        } else if (organism instanceof Plant plant) {
+            plant.grow(cell);
         }
-        //organism.safeMultiple(cell);
+        organism.safeMultiple(cell);
     }
 
 }

@@ -21,16 +21,15 @@ public abstract class Animals extends Biosphere implements AbleToEat, Movable {
 
     @Override
     public void eat(Cell currentCell) {
-        if (this.getWeight() > this.getMaxWeight() / 5) {
-            //double food = this.safeFindFood(currentCell);
-            double food = 0;
-            if (food == 0.0) {
-                safeLooseWeight(currentCell);
+        if (this.isAlive()) {
+            if (this.safeFindFood(currentCell) == 0) {
+                this.safeSetWeight(this.getWeight() * 0.9);
             }
-        } else {
             if (this.getWeight() < this.getMaxWeight() / 5) {
                 safeDie(currentCell);
             }
+        } else {
+            safeDie(currentCell);
         }
     }
 
@@ -48,9 +47,12 @@ public abstract class Animals extends Biosphere implements AbleToEat, Movable {
                 //получаем сет жертв в ячейке
                 Set<Biosphere> targetSet = currentCell.getCellAnimalCollection().get(targetName);
                 //проходимся по нему
+                if (targetSet.size() == 0) {
+                    continue;
+                }
                 for (Biosphere target : targetSet) {
                     //проверяем сможем ли скушать жертву
-                    if (Util.getRandomNumber(100) < Constants.CHANCE_TO_EAT[position][integer] && target.isAlive()) {
+                    if (Util.getRandomNumber(100) < Constants.CHANCE_TO_EAT[position][integer] && target.isAlive() && target.getWeight() != 0) {
                         //тут вичисляем вес съеденного и устанавливаем нашему животному то, что он скушал (в зависимости от максимального дневного
                         //рациона, максимального веса и так далее
                         double maxWeight = this.getMaxWeight();
@@ -58,13 +60,17 @@ public abstract class Animals extends Biosphere implements AbleToEat, Movable {
                         double thisWeight = this.getWeight();
                         double targetWeight = target.getWeight();
                         if (targetWeight < maxDiet) {
-                            this.safeSetWeight(currentCell, Math.min(thisWeight + targetWeight, maxWeight));
+                            this.safeSetWeight(Math.min(thisWeight + targetWeight, maxWeight));
                         } else {
-                            this.safeSetWeight(currentCell, Math.min(thisWeight + maxDiet, maxWeight));
+                            this.safeSetWeight(Math.min(thisWeight + maxDiet, maxWeight));
                         }
                         //тут устанавливаем жертве статус мертвеца, чтобы потом в задаче у этого животного его просто убить, а не выполнять его операции
-                        target.safeSetWeight(currentCell, 0);
-                        System.out.println(this.getName() + " съел " + targetName);
+                        if (target instanceof Animals) {
+                            target.setAlive(false);
+                        } else {
+                            target.safeSetWeight(0);
+                        }
+                        //System.out.println(this.getName() + this.getId() + " съел " + targetName);
                         return this.getWeight() - thisWeight;
                     }
                 }
@@ -74,6 +80,7 @@ public abstract class Animals extends Biosphere implements AbleToEat, Movable {
             currentCell.getLock().unlock();
         }
     }
+
 
     private void safeDie(Cell currentCell) {
         currentCell.getLock().lock();
@@ -85,21 +92,12 @@ public abstract class Animals extends Biosphere implements AbleToEat, Movable {
         }
     }
 
-    private void safeLooseWeight(Cell currentCell) {
-        currentCell.getLock().lock();
-        try {
-            this.safeSetWeight(currentCell, this.getWeight() * 0.9);
-        } finally {
-            currentCell.getLock().unlock();
-        }
-    }
-
     @Override
-    public Cell safeMove(Cell currentCell) {
-        /*int countStep = this
+    public boolean move(Cell currentCell) {
+        int countStep = this
                 .getMaxSpeed();
-        Cell destinationCell = currentCell.getNextCell(countStep);*/
-        return null;
+        Cell destinationCell = currentCell.getNextCell(countStep);
+        return safeMove(currentCell, destinationCell);
     }
 
     public List<Integer> getChanceRateAnimalTarget() {

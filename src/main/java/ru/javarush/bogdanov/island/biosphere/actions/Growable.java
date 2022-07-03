@@ -2,9 +2,8 @@ package ru.javarush.bogdanov.island.biosphere.actions;
 
 import ru.javarush.bogdanov.island.field.Cell;
 
-public interface Movable {
+public interface Growable {
 
-    @SuppressWarnings("UnusedReturnValue")
-    boolean move(Cell currentCell);
+    void grow(Cell currentCell);
 
 }

@@ -20,7 +20,7 @@ public class CellCreator {
         Cell result = new Cell();
         Map<String, Set<Biosphere>> map = result.getCellAnimalCollection();
         for (Biosphere prototype : listOfPrototypes) {
-            if (Util.getRandomNumber(100) > 50) {
+            if (Util.getRandomNumber(100) > 0) {
                 Class<?> clazz = prototype.getClass();
                 String species = clazz.getSimpleName();
                 int countOfAnimals = Util.getRandomNumber(prototype.getMaxPopulationOnCell());
@@ -29,7 +29,7 @@ public class CellCreator {
                     try {
                         Biosphere candidate = prototype.clone();
                         candidate.setGender(Util.getRandomGender());
-                        candidate.safeSetWeight(result, Util.getRandomWeight(candidate.getMaxWeight()));
+                        candidate.safeSetWeight(Util.getRandomWeight(candidate.getMaxWeight()));
                         animalSetOnCell.add(candidate);
                     } catch (CloneNotSupportedException e) {
                         e.printStackTrace();
