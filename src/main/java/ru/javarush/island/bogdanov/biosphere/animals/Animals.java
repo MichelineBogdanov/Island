@@ -23,14 +23,14 @@ public abstract class Animals extends Biosphere implements AbleToEat, Movable {
     public void eat(Cell currentCell) {
         double eatenFood = 0;
         if (this.isAlive()) {
-            /*while (eatenFood < this.getMaxDiet()) {
+            while (eatenFood < this.getMaxDiet()) {
                 double food = this.safeFindFood(currentCell);
                 if (food != 0) {
                     eatenFood += food;
                 } else {
                     break;
                 }
-            }*/
+            }
             this.safeSetWeight(currentCell, this.getWeight() * 0.9);
             if (this.getWeight() < this.getMaxWeight() / 5) {
                 safeDie(currentCell);
