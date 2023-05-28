@@ -5,7 +5,7 @@ import ru.javarush.island.bogdanov.biosphere.actions.AbleToEat;
 import ru.javarush.island.bogdanov.biosphere.actions.Movable;
 import ru.javarush.island.bogdanov.constants.Constants;
 import ru.javarush.island.bogdanov.field.Cell;
-import ru.javarush.island.bogdanov.util.Util;
+import ru.javarush.island.bogdanov.util.UtilRandom;
 
 import java.util.HashMap;
 import java.util.List;
@@ -75,7 +75,7 @@ public abstract class Animals extends Biosphere implements AbleToEat, Movable {
                 //проходимся по нему
                 for (Biosphere target : targetSet) {
                     //проверяем сможем ли скушать жертву
-                    if (Util.getRandomNumber(100) < Constants.CHANCE_TO_EAT[position][integer] && target.isAlive() && target.getWeight() != 0) {
+                    if (UtilRandom.getRandomNumber(100) < Constants.CHANCE_TO_EAT[position][integer] && target.isAlive() && target.getWeight() != 0) {
                         //тут вичисляем вес съеденного и устанавливаем нашему животному то, что он скушал (в зависимости от максимального дневного
                         //рациона, максимального веса и так далее
                         double maxWeight = this.getMaxWeight();

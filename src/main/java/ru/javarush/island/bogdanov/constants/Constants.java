@@ -1,14 +1,16 @@
 package ru.javarush.island.bogdanov.constants;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Constants {
 
-    public static final int ISLAND_COLUMNS = 5;
-    public static final int ISLAND_ROWS = 5;
+    public static final int ISLAND_COLUMNS = 2;
+    public static final int ISLAND_ROWS = 2;
     public static final String BIOSPHERE_PACKAGE_NAME = "ru.javarush.island.bogdanov.biosphere";
-    public static final List<String> ANIMAL_NAMES = new ArrayList<>() {{
+    public static final String[] ARRAY_OF_ANIMAL_NAMES = {"Wolf", "Snake", "Fox", "Bear", "Eagle", "Horse", "Deer", "Rabbit", "Mouse", "Goat",
+            "Sheep", "Boar", "Buffalo", "Duck", "Caterpillar", "Plant"};
+    public static final List<String> ANIMAL_NAMES = Arrays.asList(ARRAY_OF_ANIMAL_NAMES); /*{{
         add("Wolf");
         add("Snake");
         add("Fox");
@@ -25,7 +27,7 @@ public class Constants {
         add("Duck");
         add("Caterpillar");
         add("Plant");
-    }};
+    }};*/
     public static final int[][] CHANCE_TO_EAT = {
             {0, 0, 0, 0, 0, 10, 15, 60, 80, 60, 70, 15, 10, 40, 0, 0},
             {0, 0, 15, 0, 0, 0, 0, 20, 40, 0, 0, 0, 0, 10, 0, 0},

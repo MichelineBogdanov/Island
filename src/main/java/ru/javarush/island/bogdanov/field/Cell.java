@@ -7,7 +7,7 @@ import ru.javarush.island.bogdanov.biosphere.animals.herbivores.Herbivores;
 import ru.javarush.island.bogdanov.biosphere.animals.predators.Predators;
 import ru.javarush.island.bogdanov.biosphere.plants.Plant;
 import ru.javarush.island.bogdanov.constants.Constants;
-import ru.javarush.island.bogdanov.util.Util;
+import ru.javarush.island.bogdanov.util.UtilRandom;
 
 import java.util.*;
 import java.util.concurrent.locks.Lock;
@@ -97,7 +97,7 @@ public class Cell {
                     .toList();
             int countDirections = cells.size();
             if (countDirections > 0) {
-                int index = Util.random(0, countDirections);
+                int index = UtilRandom.random(0, countDirections);
                 currentCell = cells.get(cells.size() - 1 - index);
                 visitedCells.add(currentCell);
             } else {

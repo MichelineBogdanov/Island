@@ -3,7 +3,7 @@ package ru.javarush.island.bogdanov.creators;
 import ru.javarush.island.bogdanov.biosphere.Biosphere;
 import ru.javarush.island.bogdanov.constants.Constants;
 import ru.javarush.island.bogdanov.field.Cell;
-import ru.javarush.island.bogdanov.util.Util;
+import ru.javarush.island.bogdanov.util.UtilRandom;
 
 import java.util.HashSet;
 import java.util.List;
@@ -20,16 +20,16 @@ public class CellCreator {
         Cell result = new Cell();
         Map<String, Set<Biosphere>> map = result.getCellAnimalCollection();
         for (Biosphere prototype : listOfPrototypes) {
-            if (Util.getRandomNumber(100) > 0) {
+            if (UtilRandom.getRandomNumber(100) > 0) {
                 Class<?> clazz = prototype.getClass();
                 String species = clazz.getSimpleName();
-                int countOfAnimals = Util.getRandomNumber(prototype.getMaxPopulationOnCell());
+                int countOfAnimals = UtilRandom.getRandomNumber(prototype.getMaxPopulationOnCell());
                 Set<Biosphere> animalSetOnCell = new HashSet<>();
                 for (int i = 0; i < countOfAnimals; i++) {
                     try {
                         Biosphere candidate = prototype.clone();
-                        candidate.setGender(Util.getRandomGender());
-                        candidate.safeSetWeight(result, Util.getRandomWeight(candidate.getMaxWeight()));
+                        candidate.setGender(UtilRandom.getRandomGender());
+                        candidate.safeSetWeight(result, UtilRandom.getRandomWeight(candidate.getMaxWeight()));
                         animalSetOnCell.add(candidate);
                     } catch (CloneNotSupportedException e) {
                         e.printStackTrace();

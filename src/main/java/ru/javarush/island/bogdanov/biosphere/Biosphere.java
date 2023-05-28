@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import ru.javarush.island.bogdanov.biosphere.actions.Fertile;
 import ru.javarush.island.bogdanov.field.Cell;
-import ru.javarush.island.bogdanov.util.Util;
+import ru.javarush.island.bogdanov.util.UtilRandom;
 
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -48,7 +48,7 @@ public abstract class Biosphere implements Fertile, Cloneable {
             boolean neededGenderToMakeChild = !this.isGender();
             int neededGenderCount = currentCell.getCellSpeciesGenderCollection(type, neededGenderToMakeChild).size();
             int chance = Math.min(currentGenderCount, neededGenderCount);
-            if (Util.getRandomNumber(100) < chance
+            if (UtilRandom.getRandomNumber(100) < chance
                     && this.maxPopulationOnCell > currentGenderCount + neededGenderCount
                     && isAlive()) {
                 double childWeight = this.getMaxWeight() / 4;

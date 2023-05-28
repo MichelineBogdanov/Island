@@ -1,8 +1,8 @@
 package ru.javarush.island.bogdanov.runners;
 
+import ru.javarush.island.bogdanov.creators.FieldCreator;
 import ru.javarush.island.bogdanov.field.Field;
 import ru.javarush.island.bogdanov.game.Game;
-import ru.javarush.island.bogdanov.creators.FieldCreator;
 import ru.javarush.island.bogdanov.viewer.Viewer;
 import ru.javarush.island.bogdanov.workers.GameWorker;
 

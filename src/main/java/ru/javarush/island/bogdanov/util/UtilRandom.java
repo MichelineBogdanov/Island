@@ -2,7 +2,10 @@ package ru.javarush.island.bogdanov.util;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Util {
+public class UtilRandom {
+
+    private UtilRandom() {
+    }
 
     public static boolean getRandomGender() {
         return ThreadLocalRandom.current().nextBoolean();
